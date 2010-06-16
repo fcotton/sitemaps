@@ -34,34 +34,34 @@ $core->callBehavior('sitemapsDefineParts',$map_parts);
 
 $msg = '';
 $default_tab = 'sitemaps_options';
-$active = $core->blog->settings->sitemaps_active;
+$active = $core->blog->settings->sitemaps->sitemaps_active;
 
 foreach ($map_parts as $k => $v) {
-	${$v.'_url'} = $core->blog->settings->get('sitemaps_'.$v.'_url');
-	${$v.'_pr'}  = $core->blog->settings->get('sitemaps_'.$v.'_pr');
-	${$v.'_fq'}  = $core->blog->settings->get('sitemaps_'.$v.'_fq');
+	${$v.'_url'} = $core->blog->settings->sitemaps->get('sitemaps_'.$v.'_url');
+	${$v.'_pr'}  = $core->blog->settings->sitemaps->get('sitemaps_'.$v.'_pr');
+	${$v.'_fq'}  = $core->blog->settings->sitemaps->get('sitemaps_'.$v.'_fq');
 }
 
-$engines = @unserialize($core->blog->settings->sitemaps_engines);
-$default_pings = explode(',',$core->blog->settings->sitemaps_pings);
+$engines = @unserialize($core->blog->settings->sitemaps->sitemaps_engines);
+$default_pings = explode(',',$core->blog->settings->sitemaps->sitemaps_pings);
 
 // Save new configuration
 if (!empty($_POST['saveconfig'])) {
 	try
 	{
-		$core->blog->settings->setNameSpace('sitemaps');
+		$core->blog->settings->addNameSpace('sitemaps');
 
 		$active = (empty($_POST['active']))?false:true;
-		$core->blog->settings->put('sitemaps_active',$active,'boolean');
+		$core->blog->settings->sitemaps->put('sitemaps_active',$active,'boolean');
 
 		foreach ($map_parts as $k => $v) {
 			${$v.'_url'} = (empty($_POST[$v.'_url']))?false:true;
 			${$v.'_pr'}  = min(abs((float)$_POST[$v.'_pr']),1);
 			${$v.'_fq'}  = min(abs(intval($_POST[$v.'_fq'])),6);
 
-			$core->blog->settings->put('sitemaps_'.$v.'_url', ${$v.'_url'}, 'boolean');
-			$core->blog->settings->put('sitemaps_'.$v.'_pr' , ${$v.'_pr'}, 'double');
-			$core->blog->settings->put('sitemaps_'.$v.'_fq' , ${$v.'_fq'}, 'integer');
+			$core->blog->settings->sitemaps->put('sitemaps_'.$v.'_url', ${$v.'_url'}, 'boolean');
+			$core->blog->settings->sitemaps->put('sitemaps_'.$v.'_pr' , ${$v.'_pr'}, 'double');
+			$core->blog->settings->sitemaps->put('sitemaps_'.$v.'_fq' , ${$v.'_fq'}, 'integer');
 		}
 		$core->blog->triggerBlog();
 		http::redirect('plugin.php?p='.$p.'&conf=1');
@@ -80,8 +80,8 @@ elseif (!empty($_POST['saveprefs']))
 		if (!empty($_POST['pings'])) {
 			$new_prefs = implode(',',$_POST['pings']);
 		}
-		$core->blog->settings->setNamespace('sitemaps');
-		$core->blog->settings->put('sitemaps_pings',$new_prefs,'string');
+		$core->blog->settings->addNamespace('sitemaps');
+		$core->blog->settings->sitemaps->put('sitemaps_pings',$new_prefs,'string');
 		http::redirect('plugin.php?p='.$p.'&prefs=1');
 		exit;
 	}
@@ -129,7 +129,7 @@ else {
 	<?php echo dcPage::jsPageTabs($default_tab); ?>
 </head>
 <body>
-<h2><?php echo html::escapeHTML($core->blog->name); ?> &gt; <?php echo __('XML Sitemaps'); ?></h2>
+<h2><?php echo html::escapeHTML($core->blog->name); ?> &rsaquo; <?php echo __('XML Sitemaps'); ?></h2>
 <?php if (!empty($msg)) echo '<p class="message">'.$msg.'</p>'; ?>
 <!-- Configuration panel -->
 <div class="multi-part" id="sitemaps_options" title="<?php echo __('Configuration'); ?>">

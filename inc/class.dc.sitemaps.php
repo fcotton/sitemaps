@@ -2,7 +2,7 @@
 # -- BEGIN LICENSE BLOCK ----------------------------------
 #
 # This file is part of Sitemaps, a plugin for DotClear2.
-# Copyright (c) 2006-2009 Pep and contributors.
+# Copyright (c) 2006-2010 Pep and contributors.
 # Licensed under the GPL version 2.0 license.
 # See LICENSE file or
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -29,21 +29,21 @@ class dcSitemaps
 		$this->addPostType(
 			'post',
 			$this->blog->url.$this->core->url->getBase('post').'/',
-			$this->blog->settings->sitemaps_posts_fq,
-			$this->blog->settings->sitemaps_posts_pr
+			$this->blog->settings->sitemaps->sitemaps_posts_fq,
+			$this->blog->settings->sitemaps->sitemaps_posts_pr
 		);
 		$this->addPostType(
 			'page',
 			$this->blog->url.$this->core->url->getBase('pages').'/',
-			$this->blog->settings->sitemaps_pages_fq,
-			$this->blog->settings->sitemaps_pages_pr
+			$this->blog->settings->sitemaps->sitemaps_pages_fq,
+			$this->blog->settings->sitemaps->sitemaps_pages_pr
 		);
 	}
 
 
 	public function getURLs()
 	{
-		if ($this->blog->settings->sitemaps_active && empty($this->urls)) {
+		if ($this->blog->settings->sitemaps->sitemaps_active && empty($this->urls)) {
 			$this->collectURLs();
 		}
 		return $this->urls;
@@ -117,19 +117,19 @@ class dcSitemaps
 	protected function collectURLs()
 	{
 		// Homepage URL
-		if ($this->blog->settings->sitemaps_home_url)
+		if ($this->blog->settings->sitemaps->sitemaps_home_url)
 		{
-			$freq = $this->getFrequency($this->blog->settings->sitemaps_home_fq);
-			$prio = $this->getPriority($this->blog->settings->sitemaps_home_pr);
+			$freq = $this->getFrequency($this->blog->settings->sitemaps->sitemaps_home_fq);
+			$prio = $this->getPriority($this->blog->settings->sitemaps->sitemaps_home_pr);
 
 			$this->addEntry($this->blog->url,$prio,$freq);
 		}
 
 		// Main syndication feeds URLs
-		if ($this->core->blog->settings->sitemaps_feeds_url)
+		if ($this->core->blog->settings->sitemaps->sitemaps_feeds_url)
 		{
-			$freq = $this->getFrequency($this->blog->settings->sitemaps_feeds_fq);
-			$prio = $this->getPriority($this->blog->settings->sitemaps_feeds_pr);
+			$freq = $this->getFrequency($this->blog->settings->sitemaps->sitemaps_feeds_fq);
+			$prio = $this->getPriority($this->blog->settings->sitemaps->sitemaps_feeds_pr);
 
 			$this->addEntry(
 					$this->blog->url.$this->core->url->getBase('feed').'/rss2',
@@ -140,20 +140,20 @@ class dcSitemaps
 		}
 
 		// Posts entries URLs
-		if ($this->core->blog->settings->sitemaps_posts_url) {
+		if ($this->core->blog->settings->sitemaps->sitemaps_posts_url) {
 			$this->collectEntriesURLs('post');
 		}
 
 		// Pages entries URLs
-		if ($this->core->plugins->moduleExists('pages') && $this->core->blog->settings->sitemaps_pages_url) {
+		if ($this->core->plugins->moduleExists('pages') && $this->core->blog->settings->sitemaps->sitemaps_pages_url) {
 			$this->collectEntriesURLs('page');
 		}
 
 		// Categories URLs
-		if ($this->core->blog->settings->sitemaps_cats_url)
+		if ($this->core->blog->settings->sitemaps->sitemaps_cats_url)
 		{
-			$freq = $this->getFrequency($this->blog->settings->sitemaps_cats_fq);
-			$prio = $this->getPriority($this->blog->settings->sitemaps_cats_pr);
+			$freq = $this->getFrequency($this->blog->settings->sitemaps->sitemaps_cats_fq);
+			$prio = $this->getPriority($this->blog->settings->sitemaps->sitemaps_cats_pr);
 
 			$cats = $this->blog->getCategories();
 			while ($cats->fetch()) {
@@ -163,10 +163,10 @@ class dcSitemaps
 			}
 		}
 
-		if ($this->core->plugins->moduleExists('metadata') && $this->core->blog->settings->sitemaps_tags_url)
+		if ($this->core->plugins->moduleExists('tags') && $this->core->blog->settings->sitemaps->sitemaps_tags_url)
 		{
-			$freq = $this->getFrequency($this->blog->settings->sitemaps_tags_fq);
-			$prio = $this->getPriority($this->blog->settings->sitemaps_tags_pr);
+			$freq = $this->getFrequency($this->blog->settings->sitemaps->sitemaps_tags_fq);
+			$prio = $this->getPriority($this->blog->settings->sitemaps->sitemaps_tags_pr);
 			
 			$meta = new dcMeta($this->core);
 			$tags = $meta->getMeta('tag');
