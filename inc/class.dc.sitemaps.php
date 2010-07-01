@@ -178,7 +178,7 @@ class dcSitemaps
 		}
 		
 		// External parts ?
-		# --BEHAVIOR-- packagerAfterCreate
+		# --BEHAVIOR-- sitemapsURLsCollect
 		$this->core->callBehavior('sitemapsURLsCollect', $this);
 	}
 }
