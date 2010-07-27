@@ -10,11 +10,11 @@
 # -- END LICENSE BLOCK ------------------------------------
 if (!defined('DC_RC_PATH')) return;
 
-$GLOBALS['__autoload']['dcSitemaps'] = dirname(__FILE__).'/inc/class.dc.sitemaps.php';
+global $core, $__autoload;
+
+$__autoload['dcSitemaps'] = dirname(__FILE__).'/inc/class.dc.sitemaps.php';
 
 // Behavior(s)
-$GLOBALS['core']->addBehavior('publicBeforeDocument', array('sitemapsBehaviors','addTemplatePath'));
-
 class sitemapsBehaviors
 {
 	public static function addTemplatePath($core)
@@ -24,9 +24,10 @@ class sitemapsBehaviors
 	
 }
 
-// URL Handler(s)
-$GLOBALS['core']->url->register('gsitemap','sitemap.xml','^sitemap[_\.]xml$',array('sitemapsUrlHandlers','sitemap'));
+$core->addBehavior('publicBeforeDocument', array('sitemapsBehaviors','addTemplatePath'));
 
+
+// URL Handler(s)
 class sitemapsUrlHandlers extends dcUrlHandlers
 {
 	public static function sitemap($args)
@@ -48,4 +49,6 @@ class sitemapsUrlHandlers extends dcUrlHandlers
 		}
 	}
 }
+
+$core->url->register('gsitemap','sitemap.xml','^sitemap[_\.]xml$',array('sitemapsUrlHandlers','sitemap'));
 ?>
