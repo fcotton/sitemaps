@@ -33,7 +33,7 @@ class sitemapsUrlHandlers extends dcUrlHandlers
 	{
 		global $core,$_ctx;
 		
-		if (!$core->blog->settings->sitemaps_active) {
+		if (!$core->blog->settings->sitemaps->sitemaps_active) {
 			self::p404();
 			return;
 		}
